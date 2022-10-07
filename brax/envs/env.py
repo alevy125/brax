@@ -73,7 +73,7 @@ class Wrapper(Env):
   """Wraps the environment to allow modular transformations."""
 
   def __init__(self, env: Env):
-    super().__init__(config=None)
+    super().__init__()
     self.env = env
 
   def reset(self, toros_pos: jp.ndarray) -> State:
