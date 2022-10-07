@@ -62,9 +62,8 @@ class VectorWrapper(brax_env.Wrapper):
     super().__init__(env)
     self.batch_size = batch_size
 
-  def reset(self, rng: jp.ndarray) -> brax_env.State:
-    rng = jp.random_split(rng, self.batch_size)
-    return jp.vmap(self.env.reset)(rng)
+  def reset(self, torso_pos: jp.ndarray) -> brax_env.State:
+    return jp.vmap(self.env.reset)(torso_pos)
 
   def step(self, state: brax_env.State, action: jp.ndarray) -> brax_env.State:
     return jp.vmap(self.env.step)(state, action)

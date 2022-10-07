@@ -30,10 +30,6 @@ class State:
   """Environment state for training and inference."""
   qp: brax.QP
   obs: jp.ndarray
-  reward: jp.ndarray
-  done: jp.ndarray
-  metrics: Dict[str, jp.ndarray] = struct.field(default_factory=dict)
-  info: Dict[str, Any] = struct.field(default_factory=dict)
 
 
 @pytree.register
@@ -41,13 +37,15 @@ class Env(abc.ABC):
   """API for driving a brax system for training and inference."""
 
 
-  def __init__(self, config: Optional[str], *args, **kwargs):
-    if config:
-      config = text_format.Parse(config, brax.Config())
-      self.sys = brax.System(config, *args, **kwargs)
+  def __init__(self, config_str=None,config_brax=None):
+    if config_str is not None:
+      config = text_format.Parse(config_str, brax.Config())
+      self.sys = brax.System(config)
+    elif config_brax is not None:
+      self.sys = brax.System(config_brax)
 
   @abc.abstractmethod
-  def reset(self, rng: jp.ndarray) -> State:
+  def reset(self, torso_pos: jp.ndarray) -> State:
     """Resets the environment to an initial state."""
 
   @abc.abstractmethod
@@ -78,8 +76,8 @@ class Wrapper(Env):
     super().__init__(config=None)
     self.env = env
 
-  def reset(self, rng: jp.ndarray) -> State:
-    return self.env.reset(rng)
+  def reset(self, toros_pos: jp.ndarray) -> State:
+    return self.env.reset(torso_pos)
 
   def step(self, state: State, action: jp.ndarray) -> State:
     return self.env.step(state, action)

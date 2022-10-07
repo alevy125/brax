@@ -112,9 +112,14 @@ class System:
   def default_qp(self,
                  default_index: int = 0,
                  joint_angle: Optional[jp.ndarray] = None,
-                 joint_velocity: Optional[jp.ndarray] = None) -> QP:
+                 joint_velocity: Optional[jp.ndarray] = None,
+                 torso_pos: Optional[jp.ndarray] = None) -> QP:
     """Returns a default state for the system."""
     qp = QP.zero(shape=(self.num_bodies,))
+
+    # Set torso position
+    new_pos_torso = jp.index_update(qp.pos,0,torso_pos)
+    qp = qp.replace(pos=new_pos_torso)
 
     # set any default qps from the config
     default = None

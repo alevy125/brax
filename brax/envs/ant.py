@@ -171,119 +171,51 @@ class Ant(env.Env):
 
 
   def __init__(self,
-               ctrl_cost_weight=0.5,
-               use_contact_forces=False,
-               contact_cost_weight=5e-4,
-               healthy_reward=1.0,
-               terminate_when_unhealthy=True,
-               healthy_z_range=(0.2, 1.0),
-               reset_noise_scale=0.1,
-               exclude_current_positions_from_observation=True,
+               input_config=None,
                legacy_spring=False,
                **kwargs):
+
+    # """
+    if input_config is None:
+        config_str = _SYSTEM_CONFIG_SPRING if legacy_spring else _SYSTEM_CONFIG
+        super().__init__(config_str=config_str,**kwargs)
+    else:
+        config_brax = input_config
+        super().__init__(config_brax=config_brax,**kwargs)
+    # """
+    """
     config = _SYSTEM_CONFIG_SPRING if legacy_spring else _SYSTEM_CONFIG
-    super().__init__(config=config, **kwargs)
+    super().__init__(config=config,**kwargs)
+    """
 
-    self._ctrl_cost_weight = ctrl_cost_weight
-    self._use_contact_forces = use_contact_forces
-    self._contact_cost_weight = contact_cost_weight
-    self._healthy_reward = healthy_reward
-    self._terminate_when_unhealthy = terminate_when_unhealthy
-    self._healthy_z_range = healthy_z_range
-    self._reset_noise_scale = reset_noise_scale
-    self._exclude_current_positions_from_observation = (
-        exclude_current_positions_from_observation
-    )
+  def reset(self, torso_pos: jp.ndarray) -> env.State:
 
-  def reset(self, rng: jp.ndarray) -> env.State:
-    """Resets the environment to an initial state."""
-    rng, rng1, rng2 = jp.random_split(rng, 3)
+    qpos = self.sys.default_angle()
+    qvel = jp.zeros(qpos.shape)
 
-    qpos = self.sys.default_angle() + self._noise(rng1)
-    qvel = self._noise(rng2)
+    qp = self.sys.default_qp(joint_angle=qpos, joint_velocity=qvel, torso_pos=torso_pos)
+    obs = self._get_obs(qp)
 
-    qp = self.sys.default_qp(joint_angle=qpos, joint_velocity=qvel)
-    obs = self._get_obs(qp, self.sys.info(qp))
-    reward, done, zero = jp.zeros(3)
-    metrics = {
-        'reward_forward': zero,
-        'reward_survive': zero,
-        'reward_ctrl': zero,
-        'reward_contact': zero,
-        'x_position': zero,
-        'y_position': zero,
-        'distance_from_origin': zero,
-        'x_velocity': zero,
-        'y_velocity': zero,
-        'forward_reward': zero,
-    }
-    return env.State(qp, obs, reward, done, metrics)
+    return env.State(qp, obs)
 
   def step(self, state: env.State, action: jp.ndarray) -> env.State:
     """Run one timestep of the environment's dynamics."""
-    qp, info = self.sys.step(state.qp, action)
+    qp, _ = self.sys.step(state.qp, action)
+    obs = self._get_obs(qp)
 
-    velocity = (qp.pos[0] - state.qp.pos[0]) / self.sys.config.dt
-    forward_reward = velocity[0]
+    return state.replace(qp=qp, obs=obs)
 
-    min_z, max_z = self._healthy_z_range
-    is_healthy = jp.where(qp.pos[0, 2] < min_z, x=0.0, y=1.0)
-    is_healthy = jp.where(qp.pos[0, 2] > max_z, x=0.0, y=is_healthy)
-    if self._terminate_when_unhealthy:
-      healthy_reward = self._healthy_reward
-    else:
-      healthy_reward = self._healthy_reward * is_healthy
-    ctrl_cost = self._ctrl_cost_weight * jp.sum(jp.square(action))
-    contact_cost = (self._contact_cost_weight *
-                    jp.sum(jp.square(jp.clip(info.contact.vel, -1, 1))))
-    obs = self._get_obs(qp, info)
-    reward = forward_reward + healthy_reward - ctrl_cost - contact_cost
-    done = 1.0 - is_healthy if self._terminate_when_unhealthy else 0.0
-    state.metrics.update(
-        reward_forward=forward_reward,
-        reward_survive=healthy_reward,
-        reward_ctrl=-ctrl_cost,
-        reward_contact=-contact_cost,
-        x_position=qp.pos[0, 0],
-        y_position=qp.pos[0, 1],
-        distance_from_origin=jp.norm(qp.pos[0]),
-        x_velocity=velocity[0],
-        y_velocity=velocity[1],
-        forward_reward=forward_reward,
-    )
-
-    return state.replace(qp=qp, obs=obs, reward=reward, done=done)
-
-  def _get_obs(self, qp: brax.QP, info: brax.Info) -> jp.ndarray:
+  def _get_obs(self, qp: brax.QP) -> jp.ndarray:
     """Observe ant body position and velocities."""
     joint_angle, joint_vel = self.sys.joints[0].angle_vel(qp)
 
     # qpos: position and orientation of the torso and the joint angles.
-    if self._exclude_current_positions_from_observation:
-      qpos = [qp.pos[0, 2:], qp.rot[0], joint_angle]
-    else:
-      qpos = [qp.pos[0], qp.rot[0], joint_angle]
+    qpos = [qp.pos[0], qp.rot[0], joint_angle]
 
     # qvel: velocity of the torso and the joint angle velocities.
     qvel = [qp.vel[0], qp.ang[0], joint_vel]
 
-    # external contact forces:
-    # delta velocity (3,), delta ang (3,) * 10 bodies in the system
-    if self._use_contact_forces:
-      cfrc = [
-          jp.clip(info.contact.vel, -1, 1),
-          jp.clip(info.contact.ang, -1, 1)
-      ]
-      # flatten bottom dimension
-      cfrc = [jp.reshape(x, x.shape[:-2] + (-1,)) for x in cfrc]
-    else:
-      cfrc = []
-
-    return jp.concatenate(qpos + qvel + cfrc)
-
-  def _noise(self, rng):
-    low, hi = -self._reset_noise_scale, self._reset_noise_scale
-    return jp.random_uniform(rng, (self.sys.num_joint_dof,), low, hi)
+    return jp.concatenate(qpos + qvel)
 
 # TODO: name bodies in config according to mujoco xml
 
@@ -407,6 +339,16 @@ _SYSTEM_CONFIG = """
     }
     inertia { x: 1.0 y: 1.0 z: 1.0 }
     mass: 1
+    frozen { all: true }
+  }
+  bodies {
+    name: "Target_Level_1"
+    colliders { box { halfsize { x: 1.2 y: 1.2 z: 0.2} }}
+    frozen { all: true }
+  }
+  bodies {
+    name: "Target_Level_0"
+    colliders { box { halfsize { x: 0.6 y: 0.6 z: 0.3} }}
     frozen { all: true }
   }
   joints {
@@ -566,8 +508,8 @@ _SYSTEM_CONFIG = """
     first: "$ Body 13"
     second: "Ground"
   }
-  dt: 0.05
-  substeps: 10
+  dt: 0.1875
+  substeps: 25
   dynamics_mode: "pbd"
   """
 
@@ -691,6 +633,16 @@ bodies {
   }
   inertia { x: 1.0 y: 1.0 z: 1.0 }
   mass: 1
+  frozen { all: true }
+}
+bodies {
+  name: "Target_Level_1"
+  colliders { box { halfsize { x: 1.2 y: 1.2 z: 0.2} }}
+  frozen { all: true }
+}
+bodies {
+  name: "Target_Level_0"
+  colliders { box { halfsize { x: 0.6 y: 0.6 z: 0.3} }}
   frozen { all: true }
 }
 joints {
@@ -867,7 +819,7 @@ collide_include {
   first: "$ Body 13"
   second: "Ground"
 }
-dt: 0.05
-substeps: 10
+dt: 0.1875
+substeps: 25
 dynamics_mode: "legacy_spring"
 """
