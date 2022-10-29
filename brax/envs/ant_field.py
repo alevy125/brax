@@ -234,7 +234,7 @@ _SYSTEM_CONFIG = """
   }
   bodies {
     name: "West_Wall"
-    colliders { box { halfsize { x: 1.2 y: 5.0 z: 0.75} }}
+    colliders { box { halfsize { x: 1.2 y: 5.0 z: 1.0} }}
     frozen { all: true }
   }
   bodies {
@@ -512,6 +512,27 @@ _SYSTEM_CONFIG = """
   collide_include {
     first: "$ Body 13"
     second: "Ground"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 4"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 7"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 10"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 13"
+    second: "West_Wall"
   }
 
   dt: 0.1875
