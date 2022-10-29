@@ -234,7 +234,7 @@ _SYSTEM_CONFIG = """
   }
   bodies {
     name: "West_Wall"
-    colliders { box { halfsize { x: 1.2 y: 5.0 z: 1.0} }}
+    colliders { box { halfsize { x: 1.2 y: 5.0 z: 0.75} }}
     frozen { all: true }
   }
   bodies {
