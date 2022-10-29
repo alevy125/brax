@@ -514,6 +514,27 @@ _SYSTEM_CONFIG = """
     second: "Ground"
   }
 
+  collide_include {
+    first: "$ Torso"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 4"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 7"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 10"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 13"
+    second: "West_Wall"
+  }
+
   dt: 0.1875
   substeps: 25
   dynamics_mode: "pbd"
