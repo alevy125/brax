@@ -545,9 +545,41 @@ _SYSTEM_CONFIG = """
     first: "$ Torso"
     second: "West_Wall"
   }
+  collide_include {
+    first: "$ Body 4"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 7"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 10"
+    second: "West_Wall"
+  }
+  collide_include {
+    first: "$ Body 13"
+    second: "West_Wall"
+  }
 
   collide_include {
     first: "$ Torso"
+    second: "North_Wall"
+  }
+  collide_include {
+    first: "$ Body 4"
+    second: "North_Wall"
+  }
+  collide_include {
+    first: "$ Body 7"
+    second: "North_Wall"
+  }
+  collide_include {
+    first: "$ Body 10"
+    second: "North_Wall"
+  }
+  collide_include {
+    first: "$ Body 13"
     second: "North_Wall"
   }
 
@@ -555,9 +587,41 @@ _SYSTEM_CONFIG = """
     first: "$ Torso"
     second: "East_Wall"
   }
+  collide_include {
+    first: "$ Body 4"
+    second: "East_Wall"
+  }
+  collide_include {
+    first: "$ Body 7"
+    second: "East_Wall"
+  }
+  collide_include {
+    first: "$ Body 10"
+    second: "East_Wall"
+  }
+  collide_include {
+    first: "$ Body 13"
+    second: "East_Wall"
+  }
 
   collide_include {
     first: "$ Torso"
+    second: "South_Wall"
+  }
+  collide_include {
+    first: "$ Body 4"
+    second: "South_Wall"
+  }
+  collide_include {
+    first: "$ Body 7"
+    second: "South_Wall"
+  }
+  collide_include {
+    first: "$ Body 10"
+    second: "South_Wall"
+  }
+  collide_include {
+    first: "$ Body 13"
     second: "South_Wall"
   }
 
