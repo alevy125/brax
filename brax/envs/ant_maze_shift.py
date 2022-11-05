@@ -235,7 +235,7 @@ _SYSTEM_CONFIG = """
     name: "West_Wall"
     colliders {
       box { halfsize { x: 1.2 y: 7.5 z: 0.75} }
-      position {x: -8.7 -6. y: 0.0 + 6.0 z: 0.75}
+      position {x: -14.7 y: 6.0 + 6.0 z: 0.75}
     }
     frozen { all: true }
   }
@@ -243,7 +243,7 @@ _SYSTEM_CONFIG = """
     name: "North_Wall"
     colliders {
       box { halfsize { x: 9.9 y: 1.2 z: 0.75} }
-      position {x: 0.0 y: 8.7 z: 0.75}
+      position {x: -6.0 y: 14.7 z: 0.75}
     }
     frozen { all: true }
   }
@@ -251,7 +251,7 @@ _SYSTEM_CONFIG = """
     name: "Maze_Wall_1"
     colliders {
       box { halfsize { x: 6 y: 0.25 z: 0.75} }
-      position {x: -3.0 y: 2.9 z: 0.75}
+      position {x: -9.0 y: 8.9 z: 0.75}
     }
     frozen { all: true }
   }
@@ -259,7 +259,7 @@ _SYSTEM_CONFIG = """
     name: "Maze_Wall_2"
     colliders {
       box { halfsize { x: 6 y: 0.25 z: 0.75} }
-      position {x: 3.0 y: -2.9 z: 0.75}
+      position {x: -3.0 y: 3.1 z: 0.75}
     }
     frozen { all: true }
   }
@@ -267,7 +267,7 @@ _SYSTEM_CONFIG = """
     name: "East_Wall"
     colliders {
       box { halfsize { x: 1.2 y: 7.5 z: 0.75} }
-      position {x: 8.7 y: 0.0 z: 0.75}
+      position {x: 2.7 y: 6.0 z: 0.75}
     }
     frozen { all: true }
   }
@@ -275,7 +275,7 @@ _SYSTEM_CONFIG = """
     name: "South_Wall"
     colliders {
       box { halfsize { x: 9.9 y: 1.2 z: 0.75} }
-      position {x: 0.0 y: -8.7 z: 0.75}
+      position {x: -6.0 y: -2.7 z: 0.75}
     }
     frozen { all: true }
   }
