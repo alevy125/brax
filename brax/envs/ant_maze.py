@@ -171,7 +171,7 @@ class AntMaze(env.Env):
                input_config=None,
                legacy_spring=False,
                **kwargs):
-    
+
     if input_config is None:
         config_str = _SYSTEM_CONFIG_SPRING if legacy_spring else _SYSTEM_CONFIG
         super().__init__(config_str=config_str,**kwargs)
@@ -574,6 +574,16 @@ _SYSTEM_CONFIG = """
   collide_include {
     first: "$ Torso"
     second: "South_Wall"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "Maze_Wall_1"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "Maze_Wall_2"
   }
 
   dt: 0.1875
