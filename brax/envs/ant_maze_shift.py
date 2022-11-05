@@ -19,7 +19,7 @@ from brax import jumpy as jp
 from brax.envs import env
 
 
-class AntMaze(env.Env):
+class Ant(env.Env):
   """
   ### Description
 
