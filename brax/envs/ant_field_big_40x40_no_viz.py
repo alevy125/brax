@@ -373,16 +373,6 @@ _SYSTEM_CONFIG = """
     mass: 1
     frozen { all: true }
   }
-  bodies {
-    name: "Target_Level_1"
-    colliders { box { halfsize { x: 1.2 y: 1.2 z: 0.2} }}
-    frozen { all: true }
-  }
-  bodies {
-    name: "Target_Level_0"
-    colliders { box { halfsize { x: 0.6 y: 0.6 z: 0.3} }}
-    frozen { all: true }
-  }
   joints {
     name: "hip_1"
     parent_offset { x: 0.2 y: 0.2 }
