@@ -249,10 +249,26 @@ _SYSTEM_CONFIG = """
     frozen { all: true }
   }
   bodies {
+    name: "Top_Inner_West_Wall"
+    colliders {
+      box { halfsize { x: 1.2 y: 8.7 z: 0.75} }
+      position {x: -13.8 y: 13.7 z: 0.75}
+    }
+    frozen { all: true }
+  }
+  bodies {
     name: "North_Wall"
     colliders {
       box { halfsize { x: 15.0 y: 1.2 z: 0.75} }
       position {x: 0.0 y: 6.2 z: 0.75}
+    }
+    frozen { all: true }
+  }
+  bodies {
+    name: "Top_Inner_East_Wall"
+    colliders {
+      box { halfsize { x: 1.2 y: 8.7 z: 0.75} }
+      position {x: 13.8 y: 13.7 z: 0.75}
     }
     frozen { all: true }
   }
@@ -281,10 +297,26 @@ _SYSTEM_CONFIG = """
     frozen { all: true }
   }
   bodies {
+    name: "Bottom_Inner_East_Wall"
+    colliders {
+      box { halfsize { x: 1.2 y: 8.7 z: 0.75} }
+      position {x: 13.8 y: -13.7 z: 0.75}
+    }
+    frozen { all: true }
+  }
+  bodies {
     name: "South_Wall"
     colliders {
       box { halfsize { x: 15.0 y: 1.2 z: 0.75} }
       position {x: 0.0 y: -6.2 z: 0.75}
+    }
+    frozen { all: true }
+  }
+  bodies {
+    name: "Bottom_Inner_West_Wall"
+    colliders {
+      box { halfsize { x: 1.2 y: 8.7 z: 0.75} }
+      position {x: -13.8 y: -13.7 z: 0.75}
     }
     frozen { all: true }
   }
@@ -601,6 +633,26 @@ _SYSTEM_CONFIG = """
   collide_include {
     first: "$ Torso"
     second: "Bottom_Left_Wall"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "Top_Inner_West_Wall"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "Top_Inner_East_Wall"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "Bottom_Inner_East_Wall"
+  }
+
+  collide_include {
+    first: "$ Torso"
+    second: "Bottom_Inner_West_Wall"
   }
 
   dt: 0.1875
