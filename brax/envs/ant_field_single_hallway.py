@@ -236,14 +236,14 @@ _SYSTEM_CONFIG = """
     name: "West_Wall"
     colliders {
       box { halfsize { x: 1.2 y: 5.0 z: 0.75} }
-      position {x: -21.2 y: 0.0 z: 0.75}
+      position {x: -26.2 y: 0.0 z: 0.75}
     }
     frozen { all: true }
   }
   bodies {
     name: "North_Wall"
     colliders {
-      box { halfsize { x: 22.4 y: 1.2 z: 0.75} }
+      box { halfsize { x: 27.4 y: 1.2 z: 0.75} }
       position {x: 0.0 y: 6.2 z: 0.75}
     }
     frozen { all: true }
@@ -252,14 +252,14 @@ _SYSTEM_CONFIG = """
     name: "East_Wall"
     colliders {
       box { halfsize { x: 1.2 y: 5.0 z: 0.75} }
-      position {x: 21.2 y: 0.0 z: 0.75}
+      position {x: 26.2 y: 0.0 z: 0.75}
     }
     frozen { all: true }
   }
   bodies {
     name: "South_Wall"
     colliders {
-      box { halfsize { x: 22.4 y: 1.2 z: 0.75} }
+      box { halfsize { x: 27.4 y: 1.2 z: 0.75} }
       position {x: 0.0 y: -6.2 z: 0.75}
     }
     frozen { all: true }
