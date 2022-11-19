@@ -243,7 +243,7 @@ _SYSTEM_CONFIG = """
   bodies {
     name: "Top_Left_Wall"
     colliders {
-      box { halfsize { x: 6.4 y: 1.2 z: 0.75} }
+      box { halfsize { x: 7.4 y: 1.2 z: 0.75} }
       position {x: -20.0 y: 21.2 z: 0.75}
     }
     frozen { all: true }
@@ -259,7 +259,7 @@ _SYSTEM_CONFIG = """
   bodies {
     name: "Top_Right_Wall"
     colliders {
-      box { halfsize { x: 6.4 y: 1.2 z: 0.75} }
+      box { halfsize { x: 7.4 y: 1.2 z: 0.75} }
       position {x: 20.0 y: 21.2 z: 0.75}
     }
     frozen { all: true }
@@ -275,7 +275,7 @@ _SYSTEM_CONFIG = """
   bodies {
     name: "Bottom_Right_Wall"
     colliders {
-      box { halfsize { x: 6.4 y: 1.2 z: 0.75} }
+      box { halfsize { x: 7.4 y: 1.2 z: 0.75} }
       position {x: 20.0 y: -21.2 z: 0.75}
     }
     frozen { all: true }
@@ -291,7 +291,7 @@ _SYSTEM_CONFIG = """
   bodies {
     name: "Bottom_Left_Wall"
     colliders {
-      box { halfsize { x: 6.4 y: 1.2 z: 0.75} }
+      box { halfsize { x: 7.4 y: 1.2 z: 0.75} }
       position {x: -20.0 y: -21.2 z: 0.75}
     }
     frozen { all: true }
