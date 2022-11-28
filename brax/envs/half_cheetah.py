@@ -556,8 +556,8 @@ _SYSTEM_CONFIG = """
     first: "bfoot"
     second: "ffoot"
   }
-  dt: 0.05
-  substeps: 16
+  dt: 0.1
+  substeps: 32
   frozen {
     position {
       y: 1.0
