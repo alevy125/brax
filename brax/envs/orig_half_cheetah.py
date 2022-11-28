@@ -145,33 +145,57 @@ class Halfcheetah(env.Env):
 
 
   def __init__(self,
-               input_config=None,
+               forward_reward_weight=1.0,
+               ctrl_cost_weight=0.1,
+               reset_noise_scale=0.1,
                legacy_spring=False,
+               exclude_current_positions_from_observation=True,
                **kwargs):
+    config = _SYSTEM_CONFIG_SPRING if legacy_spring else _SYSTEM_CONFIG
+    super().__init__(config=config, **kwargs)
 
-    if input_config is None:
-        config_str = _SYSTEM_CONFIG_SPRING if legacy_spring else _SYSTEM_CONFIG
-        super().__init__(config_str=config_str,**kwargs)
-    else:
-        config_brax = input_config
-        super().__init__(config_brax=config_brax,**kwargs)
+    self._forward_reward_weight = forward_reward_weight
+    self._ctrl_cost_weight = ctrl_cost_weight
+    self._reset_noise_scale = reset_noise_scale
+    self._exclude_current_positions_from_observation = (
+        exclude_current_positions_from_observation
+    )
 
-  def reset(self, torso_pos: jp.ndarray) -> env.State:
+  def reset(self, rng: jp.ndarray) -> env.State:
+    """Resets the environment to an initial state."""
+    rng, rng1, rng2 = jp.random_split(rng, 3)
 
-    qpos = self.sys.default_angle()
-    qvel = jp.zeros(qpos.shape)
+    qpos = self.sys.default_angle() + self._noise(rng1)
+    qvel = self._noise(rng2)
 
-    qp = self.sys.default_qp(joint_angle=qpos, joint_velocity=qvel, torso_pos=torso_pos)
-    obs = self._get_obs(qp)
-
-    return env.State(qp, obs)
+    qp = self.sys.default_qp(joint_angle=qpos, joint_velocity=qvel)
+    obs = self._get_obs(qp, self.sys.info(qp))
+    reward, done, zero = jp.zeros(3)
+    metrics = {
+        'x_position': zero,
+        'x_velocity': zero,
+        'reward_ctrl': zero,
+        'reward_run': zero,
+    }
+    return env.State(qp, obs, reward, done, metrics)
 
   def step(self, state: env.State, action: jp.ndarray) -> env.State:
     """Run one timestep of the environment's dynamics."""
-    qp, _ = self.sys.step(state.qp, action)
-    obs = self._get_obs(qp)
+    qp, info = self.sys.step(state.qp, action)
 
-    return state.replace(qp=qp, obs=obs)
+    velocity = (qp.pos[0] - state.qp.pos[0]) / self.sys.config.dt
+    forward_reward = self._forward_reward_weight * velocity[0]
+    ctrl_cost = self._ctrl_cost_weight * jp.sum(jp.square(action))
+
+    obs = self._get_obs(qp, info)
+    reward = forward_reward - ctrl_cost
+    state.metrics.update(
+        x_position=qp.pos[0, 0],
+        x_velocity=velocity[0],
+        reward_run=forward_reward,
+        reward_ctrl=-ctrl_cost)
+
+    return state.replace(qp=qp, obs=obs, reward=reward)
 
   def _get_obs(self, qp: brax.QP, info: brax.Info) -> jp.ndarray:
     """Observe halfcheetah body position and velocities."""
@@ -179,12 +203,19 @@ class Halfcheetah(env.Env):
 
     # qpos: position and orientation of the torso and the joint angles
     # TODO: convert rot to just y-ang component
-    qpos = [qp.pos[0, (0, 2)], qp.rot[0, (0, 2)], joint_angle]
+    if self._exclude_current_positions_from_observation:
+      qpos = [qp.pos[0, 2:], qp.rot[0, (0, 2)], joint_angle]
+    else:
+      qpos = [qp.pos[0, (0, 2)], qp.rot[0, (0, 2)], joint_angle]
 
     # qvel: velocity of the torso and the joint angle velocities
     qvel = [qp.vel[0, (0, 2)], qp.ang[0, 1:2], joint_vel]
 
     return jp.concatenate(qpos + qvel)
+
+  def _noise(self, rng):
+    low, hi = -self._reset_noise_scale, self._reset_noise_scale
+    return jp.random_uniform(rng, (self.sys.num_joint_dof,), low, hi)
 
 
 _SYSTEM_CONFIG = """
