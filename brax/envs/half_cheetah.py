@@ -173,7 +173,7 @@ class Halfcheetah(env.Env):
 
     return state.replace(qp=qp, obs=obs)
 
-  def _get_obs(self, qp: brax.QP, info: brax.Info) -> jp.ndarray:
+  def _get_obs(self, qp: brax.QP) -> jp.ndarray:
     """Observe halfcheetah body position and velocities."""
     joint_angle, joint_vel = self.sys.joints[0].angle_vel(qp)
 
