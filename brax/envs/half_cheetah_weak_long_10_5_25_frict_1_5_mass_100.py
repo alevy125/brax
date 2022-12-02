@@ -217,7 +217,7 @@ _SYSTEM_CONFIG = """
       y: 0.9447969794273376
       z: 0.9447969794273376
     }
-    mass: 30.0
+    mass: 100.0
   }
   bodies {
     name: "bthigh"
