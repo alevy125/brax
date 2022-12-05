@@ -192,7 +192,7 @@ _SYSTEM_CONFIG = """
     name: "torso"
     colliders {
       rotation {
-        y: 0.0
+        y: 90.0
       }
       capsule {
         radius: 0.04600000008940697
@@ -201,7 +201,7 @@ _SYSTEM_CONFIG = """
     }
     colliders {
       position {
-        x: 0.6000000238418579
+        x: -0.6000000238418579
         z: 0.10000000149011612
       }
       rotation {
