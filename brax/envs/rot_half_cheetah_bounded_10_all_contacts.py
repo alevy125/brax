@@ -201,11 +201,11 @@ _SYSTEM_CONFIG = """
     }
     colliders {
       position {
-        x: -0.6000000238418579
+        x: 0.6000000238418579
         z: 0.10000000149011612
       }
       rotation {
-        y: -49.847328186035156
+        y: 49.847328186035156
       }
       capsule {
         radius: 0.04600000008940697
@@ -524,7 +524,7 @@ _SYSTEM_CONFIG = """
   actuators {
     name: "fshin"
     joint: "fshin"
-    strength: 60
+    strength: 90
     torque {
     }
   }
