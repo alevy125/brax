@@ -531,7 +531,7 @@ _SYSTEM_CONFIG = """
   actuators {
     name: "ffoot"
     joint: "ffoot"
-    strength: 30.0
+    strength: 60.0
     torque {
     }
   }
