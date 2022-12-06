@@ -290,28 +290,6 @@ _SYSTEM_CONFIG = """
     mass: 1.6574708223342896
   }
   bodies {
-    name: "fthigh"
-    colliders {
-      position {
-        x: -0.07000000029802322
-        z: -0.11999999731779099
-      }
-      rotation {
-        y: 29.793806076049805
-      }
-      capsule {
-        radius: 0.04600000008940697
-        length: 0.3580000102519989
-      }
-    }
-    inertia {
-      x: 0.024391336366534233
-      y: 0.024391336366534233
-      z: 0.024391336366534233
-    }
-    mass: 2.1759843826293945
-  }
-  bodies {
     name: "floor"
     colliders {
       plane {
