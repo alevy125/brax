@@ -628,7 +628,7 @@ _SYSTEM_CONFIG = """
     first: "East_Wall"
     second: "fshin"
   }
-  dt: 0.1
+  dt: 0.05
   substeps: 32
   frozen {
     position {
