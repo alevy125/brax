@@ -452,7 +452,13 @@ _SYSTEM_CONFIG = """
   }
   dt: 0.05
   substeps: 16
-  
+  frozen {
+    rotation {
+      x: 1.0
+      z: 1.0
+    }
+  }
+
   dynamics_mode: "pbd"
 """
 
