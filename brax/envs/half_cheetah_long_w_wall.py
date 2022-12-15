@@ -565,7 +565,7 @@ _SYSTEM_CONFIG = """
     second: "ffoot"
   }
   collide_include {
-    first: "floor"
+    first: "torso"
     second: "Front_Wall"
   }
   dt: 0.15
