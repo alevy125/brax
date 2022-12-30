@@ -21,6 +21,12 @@ import jax
 import jax.numpy as jnp
 
 
+def return_wall_up():
+    return jnp.ones((1,))
+
+def return_wall_down():
+    return jnp.zeros((1,))
+
 class Halfcheetah(env.Env):
 
 
@@ -174,12 +180,6 @@ class Halfcheetah(env.Env):
     obs = self._get_obs(qp)
 
     return state.replace(qp=qp, obs=obs)
-
-  def return_wall_up():
-      return jnp.ones((1,))
-
-  def return_wall_down():
-      return jnp.zeros((1,))
 
   def _get_obs(self, qp: brax.QP) -> jp.ndarray:
     """Observe halfcheetah body position and velocities."""
