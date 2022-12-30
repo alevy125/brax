@@ -376,7 +376,7 @@ _SYSTEM_CONFIG = """
     colliders {
       box { halfsize { x: 1.2 y: 2.0 z: 2.0} }
       position {x: 16.2 y: 0.0 z: 2.0}
-      color {:'#9C661F'}
+      color: '#9C661F'
     }
     frozen { all: true }
   }
@@ -385,7 +385,7 @@ _SYSTEM_CONFIG = """
     colliders {
       box { halfsize { x: 1.2 y: 2.0 z: 2.0} }
       position {x: -16.2 y: 0.0 z: 2.0}
-      color {:'#9C661F'}
+      color: '#9C661F'
     }
     frozen { all: true }
   }
