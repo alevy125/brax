@@ -192,8 +192,8 @@ class Halfcheetah(env.Env):
     # qvel: velocity of the torso and the joint angle velocities
     qvel = [qp.vel[0, (0, 2)], qp.ang[0, 1:2], joint_vel]
 
-    front_wall_bool = jax.lax.cond(qp.pos[8,2] < 0, return_wall_down, return_wall_up)
-    back_wall_bool = jax.lax.cond(qp.pos[9,2] < 0, return_wall_down, return_wall_up)
+    front_wall_bool = [jax.lax.cond(qp.pos[8,2] < 0, return_wall_down, return_wall_up)]
+    back_wall_bool = [jax.lax.cond(qp.pos[9,2] < 0, return_wall_down, return_wall_up)]
 
     return jp.concatenate(qpos + qvel + front_wall_bool + back_wall_bool)
 
