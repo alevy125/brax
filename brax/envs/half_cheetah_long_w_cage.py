@@ -400,6 +400,24 @@ _SYSTEM_CONFIG = """
     }
     frozen { all: true }
   }
+  bodies {
+    name: "Back_Wall_Button"
+    colliders {
+      box { halfsize { x: 3.5 y: 1.0 z: 0.05} }
+      position {x: 11.25 y: 0.0 z: 0.05}
+      color: '#292421'
+    }
+    frozen { all: true }
+  }
+  bodies {
+    name: "Front_Wall_Button"
+    colliders {
+      box { halfsize { x: 3.5 y: 1.0 z: 0.05} }
+      position {x: -11.25 y: 0.0 z: 0.05}
+      color: '#292421'
+    }
+    frozen { all: true }
+  }
   joints {
     name: "bthigh"
     parent: "torso"
