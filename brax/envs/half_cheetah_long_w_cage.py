@@ -17,6 +17,8 @@
 import brax
 from brax import jumpy as jp
 from brax.envs import env
+import jax
+import jax.numpy as jnp
 
 
 class Halfcheetah(env.Env):
@@ -173,6 +175,12 @@ class Halfcheetah(env.Env):
 
     return state.replace(qp=qp, obs=obs)
 
+  def return_wall_up():
+      return jnp.ones((1,))
+
+  def return_wall_down():
+      return jnp.zeros((1,))
+
   def _get_obs(self, qp: brax.QP) -> jp.ndarray:
     """Observe halfcheetah body position and velocities."""
     joint_angle, joint_vel = self.sys.joints[0].angle_vel(qp)
@@ -184,7 +192,10 @@ class Halfcheetah(env.Env):
     # qvel: velocity of the torso and the joint angle velocities
     qvel = [qp.vel[0, (0, 2)], qp.ang[0, 1:2], joint_vel]
 
-    return jp.concatenate(qpos + qvel)
+    front_wall_bool = jax.lax.cond(qp.pos[8,2] < 0, return_wall_down, return_wall_up)
+    back_wall_bool = jax.lax.cond(qp.pos[9,2] < 0, return_wall_down, return_wall_up)
+
+    return jp.concatenate(qpos + qvel + front_wall_bool + back_wall_bool)
 
 
 _SYSTEM_CONFIG = """
