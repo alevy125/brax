@@ -389,7 +389,7 @@ _SYSTEM_CONFIG = """
   bodies {
     name: "Button"
     colliders {
-      box { halfsize { x: 2.4 y: 2.4 z: 0.01} }
+      box { halfsize { x: 2.1 y: 2.1 z: 0.01} }
       position {x: -5.0 y: -5.0 z: 0.01}
     }
     frozen { all: true }
