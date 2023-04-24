@@ -49,7 +49,7 @@ setup(
         "Pillow>=9.4.0, <9.5.0",
         "protobuf>=3.20.3, <3.20.4",
         "pytinyrenderer>=0.0.13, <0.0.14",
-        "tensorboardX>=2.5.1, <2.6",
+        "tensorboardX",
         "trimesh>=3.17.1, <3.18.0",
         "typing-extensions>=4.4.0, <4.5.0",
         # TODO: remove when
