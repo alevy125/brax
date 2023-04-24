@@ -42,7 +42,7 @@ setup(
         "flax",
         "gym",
         "grpcio",
-        "jax",
+        "jax>=0.4.1",
         "jaxlib",
         "numpy",
         "optax",
