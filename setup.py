@@ -43,7 +43,7 @@ setup(
         "gym",
         "grpcio",
         "jax>=0.4.1, <0.4.2",
-        "jaxlib",
+        "jaxlib>=0.4.1, < 0.4.2",
         "numpy",
         "optax",
         "Pillow",
